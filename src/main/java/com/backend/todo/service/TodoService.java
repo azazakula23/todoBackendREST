@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.backend.todo.dao.TodoRepository;
 import com.backend.todo.model.Todo;
+import com.backend.todo.model.TodoList;
 
 @Service
 public class TodoService {
@@ -26,8 +27,14 @@ public class TodoService {
 		return repository.findById(id);
 	}
 
-	public List<Todo> getTodoList() {
-		return repository.findAllByOrderByIdDesc();
+	public TodoList getTodoList() {
+		List<Todo> todos = repository.findAllByOrderByIdDesc();
+		if(todos != null && todos.size() > 0) {
+			return new TodoList(todos);
+		}
+		else {
+			return new TodoList();
+		}
 	}
 
 	public Todo updateTodoByFields(int id, Map<String, Object> fields) {
